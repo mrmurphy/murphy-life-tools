@@ -1,383 +1,559 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>September Immune‑Friendly Full‑Body Workout Tracker</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root{
-  --bg-gradient:linear-gradient(135deg,#1a1a2e,#0f2027);
-  --card-bg:rgba(255,255,255,.08);
-  --text-color:#fff;
-}
-body{
-  margin:0; padding:0;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  background:var(--bg-gradient);
-  color:var(--text-color);
-  min-height:100vh;
-}
-header{
-  text-align:center; padding:1rem; font-size:1.5rem; font-weight:bold;
-}
-.tabs{
-  display:flex; gap:.5rem; margin-bottom:1rem;
-}
-.tab-btn{
-  flex:1; padding:.6rem 0; background:rgba(255,255,255,.15); color:#fff;
-  border:none; border-radius:8px; cursor:pointer; font-weight:bold;
-}
-.tab-btn.active{background:rgba(255,255,255,.3);}
-.container{
-  max-width:800px; margin:auto; padding:1rem;
-}
-.card{
-  background:var(--card-bg);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  border-radius:15px;
-  box-shadow:0 8px 32px 0 rgba(31,38,135,.37);
-  margin-bottom:1rem; padding:1rem;
-}
-.card h2{margin-top:0;}
-.exercise-table{
-  width:100%; border-collapse:collapse; margin-top:.5rem;
-}
-.exercise-table th, .exercise-table td{
-  text-align:left; padding:.4rem .8rem; color:#fff;
-}
-.exercise-table input[type=text], .exercise-table input[type=number], .exercise-table textarea{
-  width:100%; background:transparent; border:none; color:#fff; outline:none;
-  font-size:1rem;
-}
-.exercise-table textarea{resize:none;}
-::placeholder{color:rgba(255,255,255,.6);}
-.button-group{
-  display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem;
-}
-button{
-  padding:.4rem 1rem; border:none; border-radius:8px;
-  cursor:pointer; background:rgba(255,255,255,.2); color:#fff;
-}
-button:hover{background:rgba(255,255,255,.3);}
-.cancel-btn{
-  padding:.4rem .8rem; background:rgba(255,255,255,.15); color:#fff;
-  border:none; border-radius:5px; cursor:pointer; margin-left:1rem;
-}
-.cancel-btn:hover{background:rgba(255,255,255,.3);}
-</style>
-</head>
-<body>
-<header>September Immune‑Friendly Full‑Body Workout Tracker</header>
-<div class="tabs" id="tabs">
-  <button data-tab="incomplete" class="tab-btn active">Incomplete</button>
-  <button data-tab="completed" class="tab-btn">Completed</button>
-</div>
-<div class="container" id="workoutContainer"></div>
-<footer style="text-align:center; padding:1rem;">
-  <div class="button-group">
-    <button id="exportBtn">Export State</button>
-    <button id="importBtn">Import State</button>
-    <input type="file" id="importFileInput" accept=".json" style="display:none;" />
-    <button id="resetBtn">Reset Tracker</button>
-  </div>
-</footer>
-<script>
-(() => {
-const planData = {
-  foundation: {
-    A: [
-      {name:'Bench Press', sets:3, reps:10},
-      {name:'Seated Cable Row', sets:3, reps:10},
-      {name:'Goblet Squat', sets:3, reps:12},
-      {name:'Romanian Deadlift (DB)', sets:3, reps:10},
-      {name:'Plank', sets:2, reps:'20-30s'},
-      {name:"Farmer's Walk", sets:2, reps:'30 yards'}
-    ],
-    B: [
-      {name:'DB Shoulder Press', sets:3, reps:10},
-      {name:'TRX/Ring Rows', sets:3, reps:10},
-      {name:'Bodyweight Squats', sets:3, reps:15},
-      {name:'Glute Bridges', sets:3, reps:12},
-      {name:'Dead Bug', sets:2, reps:'8 each'},
-      {name:"Sled Push", sets:2, reps:'20 yards'}
-    ]
-  },
-  progression: {
-    A: [
-      {name:'Bench Press', sets:3, reps:8},
-      {name:'Seated Cable Row', sets:3, reps:8},
-      {name:'Back Squat (light)', sets:3, reps:8},
-      {name:'Romanian Deadlift (BB)', sets:3, reps:8},
-      {name:'Plank', sets:2, reps:'30-45s'},
-      {name:"Farmer's Walk", sets:2, reps:'40 yards'}
-    ],
-    B: [
-      {name:'DB Shoulder Press', sets:3, reps:8},
-      {name:'Assisted Pull-ups or Lat Pulldowns', sets:3, reps:'6-8'},
-      {name:'Walking Lunges', sets:3, reps:'8 each leg'},
-      {name:'KB Swings (light)', sets:3, reps:12},
-      {name:'Side Plank', sets:2, reps:'15-20s each side'},
-      {name:"Sled Push", sets:2, reps:'30 yards'}
-    ]
-  }
-};
+    <head>
+        <meta charset="UTF-8" />
+        <title>September Immune‑Friendly Full‑Body Workout Tracker</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            :root {
+                --bg-gradient: linear-gradient(135deg, #1a1a2e, #0f2027);
+                --card-bg: rgba(255, 255, 255, 0.08);
+                --text-color: #fff;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    Roboto,
+                    "Helvetica Neue",
+                    Arial,
+                    sans-serif;
+                background: #1a1a2e;
+                color: var(--text-color);
+                min-height: 100vh;
+            }
+            header {
+                text-align: center;
+                padding: 1rem;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            .tabs {
+                display: flex;
+                padding: 0 1rem;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .tab-btn {
+                flex: 1;
+                padding: 0.6rem 0;
+                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                min-width: 0;
+            }
+            .tab-btn.active {
+                background: rgba(255, 255, 255, 0.3);
+            }
+            .container {
+                max-width: 800px;
+                margin: auto;
+                padding: 1rem;
+            }
+            .card {
+                background: var(--card-bg);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-radius: 15px;
+                box-shadow:
+                    0 8px 24px 0 rgba(0, 0, 0, 0.3),
+                    0 12px 40px 0 rgba(31, 38, 135, 0.2);
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+            .card h2 {
+                margin-top: 0;
+            }
+            .exercise-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 0.5rem;
+            }
+            .exercise-table th,
+            .exercise-table td {
+                text-align: left;
+                padding: 0.4rem 0.8rem;
+                color: #fff;
+            }
+            .exercise-table input[type="text"],
+            .exercise-table input[type="number"],
+            .exercise-table textarea {
+                width: 100%;
+                background: transparent;
+                border: none;
+                color: #fff;
+                outline: none;
+                font-size: 1rem;
+            }
+            .exercise-table textarea {
+                resize: none;
+            }
+            ::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+            .button-group {
+                display: flex;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                margin-top: 0.5rem;
+            }
+            button {
+                padding: 0.4rem 1rem;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                background: rgba(255, 255, 255, 0.2);
+                color: #fff;
+            }
+            button:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+            .cancel-btn {
+                padding: 0.4rem 0.8rem;
+                background: rgba(255, 255, 255, 0.15);
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 1rem;
+            }
+            .cancel-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+        </style>
+    </head>
+    <body>
+        <header>September Immune‑Friendly Full‑Body Workout Tracker</header>
 
-const now = new Date();
-let targetYear = now.getMonth() < 8 ? now.getFullYear() : now.getFullYear()+1;
+        <!-- Tabs -->
+        <div class="tabs" id="tabs">
+            <button data-tab="incomplete" class="tab-btn active">
+                Incomplete
+            </button>
+            <button data-tab="completed" class="tab-btn">Completed</button>
+        </div>
 
-let workoutState = JSON.parse(localStorage.getItem('workoutState') || '{}');
+        <!-- Single Day Workout Container -->
+        <div class="container" id="workoutContainer"></div>
+        <footer style="text-align: center; padding: 1rem">
+            <div class="button-group">
+                <button id="exportBtn">Export State</button>
+                <button id="importBtn">Import State</button>
+                <input
+                    type="file"
+                    id="importFileInput"
+                    accept=".json"
+                    style="display: none"
+                />
+                <button id="resetBtn">Reset Tracker</button>
+            </div>
+        </footer>
+        <script>
+            (() => {
+                const planData = {
+                    foundation: {
+                        A: [
+                            { name: "Bench Press", sets: 3, reps: 10 },
+                            { name: "Seated Cable Row", sets: 3, reps: 10 },
+                            { name: "Goblet Squat", sets: 3, reps: 12 },
+                            {
+                                name: "Romanian Deadlift (DB)",
+                                sets: 3,
+                                reps: 10,
+                            },
+                            { name: "Plank", sets: 2, reps: "20-30s" },
+                            {
+                                name: "Farmer's Walk",
+                                sets: 2,
+                                reps: "30 yards",
+                            },
+                        ],
+                        B: [
+                            { name: "DB Shoulder Press", sets: 3, reps: 10 },
+                            { name: "TRX/Ring Rows", sets: 3, reps: 10 },
+                            { name: "Bodyweight Squats", sets: 3, reps: 15 },
+                            { name: "Glute Bridges", sets: 3, reps: 12 },
+                            { name: "Dead Bug", sets: 2, reps: "8 each" },
+                            { name: "Sled Push", sets: 2, reps: "20 yards" },
+                        ],
+                    },
+                    progression: {
+                        A: [
+                            { name: "Bench Press", sets: 3, reps: 8 },
+                            { name: "Seated Cable Row", sets: 3, reps: 8 },
+                            { name: "Back Squat (light)", sets: 3, reps: 8 },
+                            {
+                                name: "Romanian Deadlift (BB)",
+                                sets: 3,
+                                reps: 8,
+                            },
+                            { name: "Plank", sets: 2, reps: "30-45s" },
+                            {
+                                name: "Farmer's Walk",
+                                sets: 2,
+                                reps: "40 yards",
+                            },
+                        ],
+                        B: [
+                            { name: "DB Shoulder Press", sets: 3, reps: 8 },
+                            {
+                                name: "Assisted Pull-ups or Lat Pulldowns",
+                                sets: 3,
+                                reps: "6-8",
+                            },
+                            {
+                                name: "Walking Lunges",
+                                sets: 3,
+                                reps: "8 each leg",
+                            },
+                            { name: "KB Swings (light)", sets: 3, reps: 12 },
+                            {
+                                name: "Side Plank",
+                                sets: 2,
+                                reps: "15-20s each side",
+                            },
+                            { name: "Sled Push", sets: 2, reps: "30 yards" },
+                        ],
+                    },
+                };
 
-function saveWorkoutState(){
-  try{ localStorage.setItem('workoutState', JSON.stringify(workoutState)); }catch(e){ console.error("Failed to save state:", e); }
-}
+                const now = new Date();
+                let targetYear =
+                    now.getMonth() < 8
+                        ? now.getFullYear()
+                        : now.getFullYear() + 1;
 
-let currentTab='incomplete';
-function showTab(tabName){
-  currentTab=tabName;
-  const cards=document.querySelectorAll('.card');
-  cards.forEach(card=>{
-    if (card.dataset.status===tabName) card.style.display='block';
-    else card.style.display='none';
-  });
-  const tabButtons=document.querySelectorAll('.tab-btn');
-  tabButtons.forEach(btn=>{
-    if (btn.dataset.tab===tabName) btn.classList.add('active');
-    else btn.classList.remove('active');
-  });
-}
+                let workoutState = JSON.parse(
+                    localStorage.getItem("workoutState") || "{}",
+                );
 
-function generateDayCard(dateObj, dayNumber){
-  const month = dateObj.getMonth();
-  const isoDate = `${dateObj.getFullYear()}-${String(month+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}`;
-  const weekday = dateObj.getDay();
-  let workoutType;
-  if (weekday===1 || weekday===3 || weekday===5) workoutType='A';
-  else if (weekday===2 || weekday===4) workoutType='B';
-  else workoutType='Rest';
+                function saveWorkoutState() {
+                    try {
+                        localStorage.setItem(
+                            "workoutState",
+                            JSON.stringify(workoutState),
+                        );
+                    } catch (e) {
+                        console.error("Failed to save state:", e);
+                    }
+                }
 
-  const phase = dayNumber <=14 ? 'foundation' : 'progression';
-  const exercisesPlan = workoutType==='Rest'? [] : planData[phase][workoutType];
+                let currentTab = "incomplete";
+                function showTab(tabName) {
+                    currentTab = tabName;
+                    const cards = document.querySelectorAll(".card");
+                    cards.forEach((card) => {
+                        if (card.dataset.status === tabName)
+                            card.style.display = "block";
+                        else card.style.display = "none";
+                    });
+                    const tabButtons = document.querySelectorAll(".tab-btn");
+                    tabButtons.forEach((btn) => {
+                        if (btn.dataset.tab === tabName)
+                            btn.classList.add("active");
+                        else btn.classList.remove("active");
+                    });
+                }
 
-  let dayState = workoutState[isoDate];
-  if (!dayState){
-    dayState = {completed:false, energyLevel:5, exercises:{}};
-    workoutState[isoDate] = dayState;
-    saveWorkoutState();
-  }
+                function generateDayCard(dateObj, dayNumber) {
+                    const month = dateObj.getMonth();
+                    const isoDate = `${dateObj.getFullYear()}-${String(month + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+                    const weekday = dateObj.getDay();
+                    let workoutType;
+                    if (weekday === 1 || weekday === 3 || weekday === 5)
+                        workoutType = "A";
+                    else if (weekday === 2 || weekday === 4) workoutType = "B";
+                    else workoutType = "Rest";
 
-  const card=document.createElement('div');
-  card.className='card';
-  card.dataset.status=dayState.completed?'completed':'incomplete';
+                    const phase =
+                        dayNumber <= 14 ? "foundation" : "progression";
+                    const exercisesPlan =
+                        workoutType === "Rest"
+                            ? []
+                            : planData[phase][workoutType];
 
-  // Header
-  const header=document.createElement('h2');
-  const dateStr=dateObj.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'});
-  header.textContent=`${dateStr} - ${workoutType==='Rest'?'Rest Day':`Workout ${workoutType}`}`;
-  card.appendChild(header);
+                    let dayState = workoutState[isoDate];
+                    if (!dayState) {
+                        dayState = {
+                            completed: false,
+                            energyLevel: 5,
+                            exercises: {},
+                        };
+                        workoutState[isoDate] = dayState;
+                        saveWorkoutState();
+                    }
 
-  // Completed checkbox and cancel button
-  const completedLabel=document.createElement('label');
-  completedLabel.style.display='flex';
-  completedLabel.style.alignItems='center';
-  const completedCheckbox=document.createElement('input');
-  completedCheckbox.type='checkbox';
-  completedCheckbox.checked=dayState.completed;
-  completedCheckbox.addEventListener('change', e=>{
-    dayState.completed=e.target.checked;
-    card.dataset.status=dayState.completed?'completed':'incomplete';
-    if (card._cancelBtn) card._cancelBtn.style.display = dayState.completed ? 'none' : 'inline-block';
-    saveWorkoutState();
-    showTab(currentTab);
-  });
-  completedLabel.appendChild(completedCheckbox);
-  completedLabel.appendChild(document.createTextNode(' Completed'));
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.dataset.status = dayState.completed
+                        ? "completed"
+                        : "incomplete";
 
-  const cancelBtn=document.createElement('button');
-  cancelBtn.textContent='Cancel Workout';
-  cancelBtn.className='cancel-btn';
-  cancelBtn.style.marginLeft='1rem';
-  cancelBtn.addEventListener('click', ()=>{
-    dayState.completed=true;
-    completedCheckbox.checked=true;
-    card.dataset.status='completed';
-    if (card._cancelBtn) card._cancelBtn.style.display='none';
-    saveWorkoutState();
-    showTab(currentTab);
-  });
-  cancelBtn.style.display = (workoutType!=='Rest' && !dayState.completed)? 'inline-block':'none';
+                    // Header
+                    const header = document.createElement("h2");
+                    const dateStr = dateObj.toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                    });
+                    header.textContent = `${dateStr} - ${workoutType === "Rest" ? "Rest Day" : `Workout ${workoutType}`}`;
+                    card.appendChild(header);
 
-  const actionDiv=document.createElement('div');
-  actionDiv.style.display='flex';
-  actionDiv.style.alignItems='center';
-  actionDiv.appendChild(completedLabel);
-  actionDiv.appendChild(cancelBtn);
-  card.appendChild(actionDiv);
-  card._cancelBtn=cancelBtn;
+                    // Completed checkbox and cancel button
+                    const completedLabel = document.createElement("label");
+                    completedLabel.style.display = "flex";
+                    completedLabel.style.alignItems = "center";
+                    const completedCheckbox = document.createElement("input");
+                    completedCheckbox.type = "checkbox";
+                    completedCheckbox.checked = dayState.completed;
+                    completedCheckbox.addEventListener("change", (e) => {
+                        dayState.completed = e.target.checked;
+                        card.dataset.status = dayState.completed
+                            ? "completed"
+                            : "incomplete";
+                        if (card._cancelBtn)
+                            card._cancelBtn.style.display = dayState.completed
+                                ? "none"
+                                : "inline-block";
+                        saveWorkoutState();
+                        showTab(currentTab);
+                    });
+                    completedLabel.appendChild(completedCheckbox);
+                    completedLabel.appendChild(
+                        document.createTextNode(" Completed"),
+                    );
 
-  // Energy level input for non-rest days
-  if (workoutType !== 'Rest'){
-    const energyDiv=document.createElement('div');
-    energyDiv.style.display='flex';
-    energyDiv.style.alignItems='center';
-    energyDiv.style.marginTop='0.5rem';
+                    const cancelBtn = document.createElement("button");
+                    cancelBtn.textContent = "Cancel Workout";
+                    cancelBtn.className = "cancel-btn";
+                    cancelBtn.style.marginLeft = "1rem";
+                    cancelBtn.addEventListener("click", () => {
+                        dayState.completed = true;
+                        completedCheckbox.checked = true;
+                        card.dataset.status = "completed";
+                        if (card._cancelBtn)
+                            card._cancelBtn.style.display = "none";
+                        saveWorkoutState();
+                        showTab(currentTab);
+                    });
+                    cancelBtn.style.display =
+                        workoutType !== "Rest" && !dayState.completed
+                            ? "inline-block"
+                            : "none";
 
-    const energyLabel=document.createElement('span');
-    energyLabel.textContent=`Energy Level (${dayState.energyLevel})`;
-    energyLabel.style.marginRight='0.5rem';
-    energyDiv.appendChild(energyLabel);
+                    const actionDiv = document.createElement("div");
+                    actionDiv.style.display = "flex";
+                    actionDiv.style.alignItems = "center";
+                    actionDiv.appendChild(completedLabel);
+                    actionDiv.appendChild(cancelBtn);
+                    card.appendChild(actionDiv);
+                    card._cancelBtn = cancelBtn;
 
-    const energyInput=document.createElement('input');
-    energyInput.type='number';
-    energyInput.min='1';
-    energyInput.max='10';
-    energyInput.step='1';
-    energyInput.value=dayState.energyLevel;
-    energyInput.addEventListener('change', e=>{
-      let val=parseInt(e.target.value,10);
-      if (isNaN(val)||val<1) val=1;
-      if (val>10) val=10;
-      dayState.energyLevel=val;
-      energyLabel.textContent=`Energy Level (${dayState.energyLevel})`;
-      saveWorkoutState();
-    });
-    energyDiv.appendChild(energyInput);
-    card.appendChild(energyDiv);
-  }
+                    // Energy level input for non-rest days
+                    if (workoutType !== "Rest") {
+                        const energyDiv = document.createElement("div");
+                        energyDiv.style.display = "flex";
+                        energyDiv.style.alignItems = "center";
+                        energyDiv.style.marginTop = "0.5rem";
 
-  // Exercises table
-  if (exercisesPlan.length>0){
-    const table=document.createElement('table');
-    table.className='exercise-table';
-    const thead=document.createElement('thead');
-    const headerRow=document.createElement('tr');
-    ['Exercise','Sets x Reps','Weight (lbs)','Notes'].forEach(text=>{
-      const th=document.createElement('th');
-      th.textContent=text;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+                        const energyLabel = document.createElement("span");
+                        energyLabel.textContent = `Energy Level (${dayState.energyLevel})`;
+                        energyLabel.style.marginRight = "0.5rem";
+                        energyDiv.appendChild(energyLabel);
 
-    const tbody=document.createElement('tbody');
+                        const energyInput = document.createElement("input");
+                        energyInput.type = "number";
+                        energyInput.min = "1";
+                        energyInput.max = "10";
+                        energyInput.step = "1";
+                        energyInput.inputMode = "numeric";
+                        energyInput.value = dayState.energyLevel;
+                        energyInput.addEventListener("change", (e) => {
+                            let val = parseInt(e.target.value, 10);
+                            if (isNaN(val) || val < 1) val = 1;
+                            if (val > 10) val = 10;
+                            dayState.energyLevel = val;
+                            energyLabel.textContent = `Energy Level (${dayState.energyLevel})`;
+                            saveWorkoutState();
+                        });
+                        energyDiv.appendChild(energyInput);
+                        card.appendChild(energyDiv);
+                    }
 
-    exercisesPlan.forEach(ex=>{
-      const tr=document.createElement('tr');
-      // Exercise name
-      const tdName=document.createElement('td'); tdName.textContent=ex.name; tr.appendChild(tdName);
-      // Sets x Reps
-      const tdSetsReps=document.createElement('td'); tdSetsReps.textContent=`${ex.sets}x${ex.reps}`; tr.appendChild(tdSetsReps);
+                    // Exercises table
+                    if (exercisesPlan.length > 0) {
+                        const table = document.createElement("table");
+                        table.className = "exercise-table";
+                        const thead = document.createElement("thead");
+                        const headerRow = document.createElement("tr");
+                        [
+                            "Exercise",
+                            "Sets x Reps",
+                            "Weight (lbs)",
+                            "Notes",
+                        ].forEach((text) => {
+                            const th = document.createElement("th");
+                            th.textContent = text;
+                            headerRow.appendChild(th);
+                        });
+                        thead.appendChild(headerRow);
+                        table.appendChild(thead);
 
-      // Weight input
-      const tdWeight=document.createElement('td');
-      const weightInput=document.createElement('input');
-      weightInput.type='number';
-      weightInput.step='0.5';
-      weightInput.min='0';
-      weightInput.placeholder='Weight (lbs)';
-      const saved=dayState.exercises[ex.name];
-      if (saved && typeof saved.weight!=='undefined'){ weightInput.value=saved.weight; }
-      weightInput.addEventListener('change', e=>{
-        const val=parseFloat(e.target.value);
-        if (!dayState.exercises[ex.name]) dayState.exercises[ex.name]={};
-        if (!isNaN(val)) dayState.exercises[ex.name].weight=val; else delete dayState.exercises[ex.name].weight;
-        saveWorkoutState();
-      });
-      tdWeight.appendChild(weightInput);
-      tr.appendChild(tdWeight);
+                        const tbody = document.createElement("tbody");
 
-      // Notes textarea
-      const tdNotes=document.createElement('td');
-      const notesInput=document.createElement('textarea');
-      notesInput.rows='1';
-      notesInput.placeholder='Notes';
-      if (saved && typeof saved.notes!=='undefined'){ notesInput.value=saved.notes; }
-      notesInput.addEventListener('input', e=>{
-        const val=notesInput.value.trim();
-        if (!dayState.exercises[ex.name]) dayState.exercises[ex.name]={};
-        if (val) dayState.exercises[ex.name].notes=val; else delete dayState.exercises[ex.name].notes;
-        saveWorkoutState();
-      });
-      tdNotes.appendChild(notesInput);
-      tr.appendChild(tdNotes);
+                        exercisesPlan.forEach((ex) => {
+                            const tr = document.createElement("tr");
+                            // Exercise name
+                            const tdName = document.createElement("td");
+                            tdName.textContent = ex.name;
+                            tr.appendChild(tdName);
+                            // Sets x Reps
+                            const tdSetsReps = document.createElement("td");
+                            tdSetsReps.textContent = `${ex.sets}x${ex.reps}`;
+                            tr.appendChild(tdSetsReps);
 
-      tbody.appendChild(tr);
-    });
+                            // Weight input
+                            const tdWeight = document.createElement("td");
+                            const weightInput = document.createElement("input");
+                            weightInput.type = "number";
+                            weightInput.step = "0.5";
+                            weightInput.min = "0";
+                            weightInput.inputMode = "decimal";
+                            weightInput.placeholder = "Weight (lbs)";
+                            const saved = dayState.exercises[ex.name];
+                            if (saved && typeof saved.weight !== "undefined") {
+                                weightInput.value = saved.weight;
+                            }
+                            weightInput.addEventListener("change", (e) => {
+                                const val = parseFloat(e.target.value);
+                                if (!dayState.exercises[ex.name])
+                                    dayState.exercises[ex.name] = {};
+                                if (!isNaN(val))
+                                    dayState.exercises[ex.name].weight = val;
+                                else delete dayState.exercises[ex.name].weight;
+                                saveWorkoutState();
+                            });
+                            tdWeight.appendChild(weightInput);
+                            tr.appendChild(tdWeight);
 
-    table.appendChild(tbody);
-    card.appendChild(table);
-  }
+                            // Notes textarea
+                            const tdNotes = document.createElement("td");
+                            const notesInput =
+                                document.createElement("textarea");
+                            notesInput.rows = "1";
+                            notesInput.placeholder = "Notes";
+                            if (saved && typeof saved.notes !== "undefined") {
+                                notesInput.value = saved.notes;
+                            }
+                            notesInput.addEventListener("input", (e) => {
+                                const val = notesInput.value.trim();
+                                if (!dayState.exercises[ex.name])
+                                    dayState.exercises[ex.name] = {};
+                                if (val)
+                                    dayState.exercises[ex.name].notes = val;
+                                else delete dayState.exercises[ex.name].notes;
+                                saveWorkoutState();
+                            });
+                            tdNotes.appendChild(notesInput);
+                            tr.appendChild(tdNotes);
 
-  return card;
-}
+                            tbody.appendChild(tr);
+                        });
 
-// Render all days
-const container=document.getElementById('workoutContainer');
-for (let day=1; day<=30; day++){
-  const dateObj=new Date(targetYear,8,day); // September month index 8
-  const card=generateDayCard(dateObj, day);
-  container.appendChild(card);
-}
-showTab(currentTab);
+                        table.appendChild(tbody);
+                        card.appendChild(table);
+                    }
 
-// Tab button handlers
-const tabButtons=document.querySelectorAll('.tab-btn');
-tabButtons.forEach(btn=>{
-  btn.addEventListener('click',()=>showTab(btn.dataset.tab));
-});
+                    return card;
+                }
 
-// Export / Import / Reset
-const exportBtn=document.getElementById('exportBtn');
-exportBtn.addEventListener('click', ()=>{
-  const dataStr = JSON.stringify(workoutState, null, 2);
-  const blob=new Blob([dataStr],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  const dateNow=new Date();
-  const filename=`workout_state_${dateNow.getFullYear()}${String(dateNow.getMonth()+1).padStart(2,'0')}${String(dateNow.getDate()).padStart(2,'0')}.json`;
-  a.download=filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-});
+                // Render all days
+                const container = document.getElementById("workoutContainer");
+                for (let day = 1; day <= 30; day++) {
+                    const dateObj = new Date(targetYear, 8, day); // September month index 8
+                    const card = generateDayCard(dateObj, day);
+                    container.appendChild(card);
+                }
+                showTab(currentTab);
 
-const importBtn=document.getElementById('importBtn');
-const fileInput=document.getElementById('importFileInput');
+                // Tab button handlers
+                const tabButtons = document.querySelectorAll(".tab-btn");
+                tabButtons.forEach((btn) => {
+                    btn.addEventListener("click", () =>
+                        showTab(btn.dataset.tab),
+                    );
+                });
 
-importBtn.addEventListener('click', ()=>{
-  fileInput.value='';
-  fileInput.click();
-});
+                // Export / Import / Reset
+                const exportBtn = document.getElementById("exportBtn");
+                exportBtn.addEventListener("click", () => {
+                    const dataStr = JSON.stringify(workoutState, null, 2);
+                    const blob = new Blob([dataStr], {
+                        type: "application/json",
+                    });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    const dateNow = new Date();
+                    const filename = `workout_state_${dateNow.getFullYear()}${String(dateNow.getMonth() + 1).padStart(2, "0")}${String(dateNow.getDate()).padStart(2, "0")}.json`;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
 
-fileInput.addEventListener('change', e=>{
-  if (!e.target.files.length) return;
-  const file=e.target.files[0];
-  const reader=new FileReader();
-  reader.onload=function(evt){
-    try{
-      const imported=JSON.parse(evt.target.result);
-      if (typeof imported==='object' && imported!==null){
-        workoutState=imported;
-        localStorage.setItem('workoutState', JSON.stringify(workoutState));
-        location.reload();
-      } else throw new Error('Invalid format');
-    }catch(err){
-      alert('Failed to import: '+err.message);
-    }
-  };
-  reader.readAsText(file);
-});
+                const importBtn = document.getElementById("importBtn");
+                const fileInput = document.getElementById("importFileInput");
 
-const resetBtn=document.getElementById('resetBtn');
-resetBtn.addEventListener('click', ()=>{
-  if (confirm('Are you sure you want to delete all data?')) {
-    localStorage.removeItem('workoutState');
-    location.reload();
-  }
-});
-})();
-</script>
-</body>
+                importBtn.addEventListener("click", () => {
+                    fileInput.value = "";
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener("change", (e) => {
+                    if (!e.target.files.length) return;
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function (evt) {
+                        try {
+                            const imported = JSON.parse(evt.target.result);
+                            if (
+                                typeof imported === "object" &&
+                                imported !== null
+                            ) {
+                                workoutState = imported;
+                                localStorage.setItem(
+                                    "workoutState",
+                                    JSON.stringify(workoutState),
+                                );
+                                location.reload();
+                            } else throw new Error("Invalid format");
+                        } catch (err) {
+                            alert("Failed to import: " + err.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                });
+
+                const resetBtn = document.getElementById("resetBtn");
+                resetBtn.addEventListener("click", () => {
+                    if (confirm("Are you sure you want to delete all data?")) {
+                        localStorage.removeItem("workoutState");
+                        location.reload();
+                    }
+                });
+            })();
+        </script>
+    </body>
 </html>
