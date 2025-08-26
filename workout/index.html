@@ -1,40 +1,46 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>September Immune‑Friendly Full‑Body Workout Tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="/workout/icon.png">
-    <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-    <header>September Immune‑Friendly Full‑Body Workout Tracker</header>
+    <head>
+        <meta charset="UTF-8" />
+        <title>September Workout</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <link rel="apple-touch-icon" href="/workout/icon.png" />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <header>September Workout</header>
 
-    <!-- Tabs -->
-    <div class="tabs" id="tabs">
-        <button data-tab="incomplete" class="tab-btn active">
-            Incomplete
-        </button>
-        <button data-tab="completed" class="tab-btn">Completed</button>
-    </div>
-
-    <!-- Single Day Workout Container -->
-    <div class="container" id="workoutContainer"></div>
-    <footer style="text-align: center; padding: 1rem">
-        <div class="button-group">
-            <button id="exportBtn">Export State</button>
-            <button id="importBtn">Import State</button>
-            <input
-                type="file"
-                id="importFileInput"
-                accept=".json"
-                style="display: none"
-            />
-            <button id="resetBtn">Reset Tracker</button>
+        <!-- Tabs -->
+        <div class="tabs" id="tabs">
+            <button data-tab="incomplete" class="tab-btn active">
+                Incomplete
+            </button>
+            <button data-tab="completed" class="tab-btn">Completed</button>
         </div>
-    </footer>
-    <script src="script.js"></script>
-</body>
+
+        <!-- Single Day Workout Container -->
+        <div class="container" id="workoutContainer"></div>
+        <footer style="text-align: center; padding: 1rem">
+            <div class="button-group">
+                <button id="exportBtn">Export State</button>
+                <button id="importBtn">Import State</button>
+                <input
+                    type="file"
+                    id="importFileInput"
+                    accept=".json"
+                    style="display: none"
+                />
+                <button id="resetBtn">Reset Tracker</button>
+            </div>
+        </footer>
+        <script src="script.js"></script>
+    </body>
 </html>
