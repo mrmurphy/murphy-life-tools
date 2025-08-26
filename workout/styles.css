@@ -3,6 +3,7 @@
     --card-bg: rgba(255, 255, 255, 0.08);
     --text-color: #fff;
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -15,16 +16,43 @@ body {
         "Helvetica Neue",
         Arial,
         sans-serif;
-    background: #1a1a2e;
+    background: var(--bg-gradient);
     color: var(--text-color);
     min-height: 100vh;
+    /* Ensure background extends to edges */
+    -webkit-background-clip: padding-box;
+    background-attachment: fixed;
+    /* Handle iOS safe areas */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
+
+/* iOS specific adjustments */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* Ensure background extends behind dynamic island */
+        padding-top: max(0px, env(safe-area-inset-top));
+    }
+
+    /* For iPhone with dynamic island */
+    @media (max-width: 480px) {
+        body {
+            padding-top: max(20px, env(safe-area-inset-top));
+        }
+    }
+}
+
 header {
     text-align: center;
     padding: 1rem;
     font-size: 1.5rem;
     font-weight: bold;
+    /* Ensure header extends behind safe area */
+    padding-top: calc(1rem + env(safe-area-inset-top));
 }
+
 .tabs {
     display: flex;
     padding: 0 1rem;
@@ -34,6 +62,7 @@ header {
     margin-left: auto;
     margin-right: auto;
 }
+
 .tab-btn {
     flex: 1;
     padding: 0.6rem 0;
@@ -45,14 +74,17 @@ header {
     font-weight: bold;
     min-width: 0;
 }
+
 .tab-btn.active {
     background: rgba(255, 255, 255, 0.3);
 }
+
 .container {
     max-width: 800px;
     margin: auto;
     padding: 1rem;
 }
+
 .card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
@@ -64,20 +96,24 @@ header {
     margin-bottom: 1rem;
     padding: 1rem;
 }
+
 .card h2 {
     margin-top: 0;
 }
+
 .exercise-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 0.5rem;
 }
+
 .exercise-table th,
 .exercise-table td {
     text-align: left;
     padding: 0.4rem 0.8rem;
     color: #fff;
 }
+
 .exercise-table input[type="text"],
 .exercise-table input[type="number"],
 .exercise-table textarea {
@@ -88,18 +124,22 @@ header {
     outline: none;
     font-size: 1rem;
 }
+
 .exercise-table textarea {
     resize: none;
 }
+
 ::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
+
 .button-group {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
     margin-top: 0.5rem;
 }
+
 button {
     padding: 0.4rem 1rem;
     border: none;
@@ -108,9 +148,11 @@ button {
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
 }
+
 button:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+
 .cancel-btn {
     padding: 0.4rem 0.8rem;
     background: rgba(255, 255, 255, 0.15);
@@ -120,6 +162,7 @@ button:hover {
     cursor: pointer;
     margin-left: 1rem;
 }
+
 .cancel-btn:hover {
     background: rgba(255, 255, 255, 0.3);
 }
