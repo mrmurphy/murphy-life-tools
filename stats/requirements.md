@@ -38,7 +38,7 @@ The Stats Tracker is a mobile-first web application that allows users to track d
 - [ ] No data is sent to external servers
 
 ### Technical Requirements
-- [ ] Built as a JavaScript Single Page Application (SPA)
+- [ ] Built as a TypeScript Next.js Single Page Application (SPA)
 - [ ] Uses React for UI components
 - [ ] Uses Chakra UI for styling and theming
 - [ ] Uses Dexie.js for IndexedDB operations
@@ -48,7 +48,7 @@ The Stats Tracker is a mobile-first web application that allows users to track d
 ## Roadmap
 
 ### Phase 1: Core Grid Interface (Week 1-2)
-- Set up React + Chakra UI + Dexie.js project structure
+- Set up Next.js + Chakra UI + Dexie.js project structure with TypeScript
 - Implement basic grid layout with sticky headers
 - Create cell toggling functionality (3-state system)
 - Add month navigation
@@ -85,7 +85,7 @@ The Stats Tracker is a mobile-first web application that allows users to track d
 - Empty cells are visually distinct from filled cells
 
 **Technical Tasks:**
-- Create React component for stats grid
+- Create Next.js + TypeScript React component for stats grid
 - Implement sticky positioning for headers
 - Add responsive CSS for mobile
 - Create date utilities for month handling
@@ -235,7 +235,7 @@ db.version(1).stores({
 ```
 
 ### Key Libraries
-- **React 18+**: UI framework
+- **Next.js 13+**: UI framework with TypeScript support
 - **Chakra UI 2+**: Component library and theming
 - **Dexie.js 3+**: IndexedDB wrapper
 - **Wouter**: Lightweight client-side routing (if needed for deep linking)
